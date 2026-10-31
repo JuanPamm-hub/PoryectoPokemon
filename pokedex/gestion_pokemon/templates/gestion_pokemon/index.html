@@ -1,0 +1,115 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokédex - Panel Principal</title>
+    <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header class="header-pokedex">
+        <h1>⚡ Pokédex & Gestión ⚡</h1>
+        <p>Sistema oficial de administración Pokémon, Entrenadores y Gimnasios</p>
+    </header>
+
+    <main class="container">
+        
+        <!-- SECCIÓN DE POKÉMONES -->
+        <section class="section-container">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 15px;">
+                <h2 class="section-title" style="margin-bottom: 0;">✨ Pokémones Registrados</h2>
+                <a href="{% url 'gestion_pokemon:crear_pokemon' %}" class="btn btn-create">➕ Registrar Pokémon</a>
+            </div>
+
+            <div class="pokemon-grid">
+                {% for pokemon in pokemones %}
+                    <div class="pokemon-card">
+                        <div class="pokemon-image-container">
+                            {% if pokemon.imagen %}
+                                <img src="{{ pokemon.imagen.url }}" alt="{{ pokemon.nombre }}">
+                            {% else %}
+                                <img src="{% static 'images/default-pokemon.png' %}" alt="Sin imagen">
+                            {% endif %}
+                        </div>
+                        
+                        <div class="pokemon-info" style="text-align: center;">
+                            <h2>{{ pokemon.nombre }}</h2>
+                            
+                            <div class="card-actions" style="margin-top: 15px; display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;">
+                                <a href="{% url 'gestion_pokemon:detalle_pokemon' pokemon.id %}" class="btn" style="background-color: #17a2b8; color: white; padding: 6px 12px; font-size: 0.8rem;">👁️ Ver más</a>
+                                <a href="{% url 'gestion_pokemon:editar_pokemon' pokemon.id %}" class="btn btn-edit" style="padding: 6px 12px; font-size: 0.8rem;">✏️ Editar</a>
+                                <a href="{% url 'gestion_pokemon:eliminar_pokemon' pokemon.id %}" class="btn btn-delete" style="padding: 6px 12px; font-size: 0.8rem;">🗑️ Eliminar</a>
+                            </div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p class="no-data">No hay pokemones registrados todavía.</p>
+                {% endfor %}
+            </div>
+        </section>
+
+        <!-- SECCIÓN DE ENTRENADORES -->
+        <section class="section-container" style="margin-top: 50px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 15px;">
+                <h2 class="section-title" style="margin-bottom: 0;">🧢 Entrenadores</h2>
+                <!-- Cambia el href con la url real cuando crees la vista de entrenadores -->
+                <a href="{% url 'gestion_pokemon:crear_entrenador' %}" class="btn btn-create">➕ Registrar Entrenador</a>
+            </div>
+
+            <div class="pokemon-grid">
+                {% for entrenador in entrenadores %}
+                    <div class="pokemon-card" style="padding: 20px; text-align: center; display: flex; flex-direction: column; justify-content: space-between;">
+                        <div>
+                            <h3 style="color: #1a1a1a; font-size: 1.3rem; margin-bottom: 8px;">{{ entrenador.nombre }}</h3>
+                            <p style="color: #666; font-size: 0.9rem; margin-bottom: 15px;">Edad: {{ entrenador.edad }} | Ciudad: {{ entrenador.ciudad }}</p>
+                        </div>
+                        <div style="display: flex; justify-content: center; gap: 8px; border-top: 1px solid #eee; padding-top: 12px;">
+                            <a href="{% url 'gestion_pokemon:detalle_entrenador' entrenador.id_documento %}" class="btn" style="background-color: #17a2b8; color: white; padding: 6px 12px; font-size: 0.8rem;">👁️ Ver más</a>
+                            <a href="{% url 'gestion_pokemon:editar_entrenador' entrenador.id_documento %}" class="btn btn-edit" style="padding: 6px 12px; font-size: 0.8rem;">✏️ Editar</a>
+                            <a href="{% url 'gestion_pokemon:eliminar_entrenador' entrenador.id_documento %}" class="btn btn-delete" style="padding: 6px 12px; font-size: 0.8rem;">🗑️ Eliminar</a>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p class="no-data">No hay entrenadores registrados todavía.</p>
+                {% endfor %}
+            </div>
+        </section>
+
+        <!-- SECCIÓN DE GIMNASIOS -->
+        <section class="section-container" style="margin-top: 50px; margin-bottom: 50px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 15px;">
+                <h2 class="section-title" style="margin-bottom: 0;">🏟️ Gimnasios Pokémon</h2>
+                <!-- Cambia el href con la url real cuando crees la vista de gimnasios -->
+                <a href="{% url 'gestion_pokemon:crear_gimnasio' %}" class="btn btn-create">➕ Registrar Gimnasio</a>
+            </div>
+
+            <div class="pokemon-grid">
+                {% for gimnasio in gimnasios %}
+                    <div class="pokemon-card" style="padding: 20px; text-align: center; display: flex; flex-direction: column; justify-content: space-between;">
+                        <div>
+                            <h3 style="color: #1a1a1a; font-size: 1.3rem; margin-bottom: 8px;">{{ gimnasio.nombre }}</h3>
+                            <p style="color: #666; font-size: 0.9rem; margin-bottom: 6px;">Líder: <strong>{{ gimnasio.lider }}</strong></p>
+                            <p style="color: #444; font-size: 0.85rem; margin-bottom: 15px;">Medalla: {{ gimnasio.medalla }}</p>
+                        </div>
+                        
+
+<!-- Botones en cada tarjeta de gimnasio -->
+                        <div style="display: flex; justify-content: center; gap: 8px; border-top: 1px solid #eee; padding-top: 12px; flex-wrap: wrap;">
+                            <a href="{% url 'gestion_pokemon:detalle_gimnasio' gimnasio.id %}" class="btn" style="background-color: #17a2b8; color: white; padding: 6px 12px; font-size: 0.8rem;">👁️ Ver más</a>
+                            <a href="{% url 'gestion_pokemon:editar_gimnasio' gimnasio.id %}" class="btn btn-edit" style="padding: 6px 12px; font-size: 0.8rem;">✏️ Editar</a>
+                            <a href="{% url 'gestion_pokemon:eliminar_gimnasio' gimnasio.id %}" class="btn btn-delete" style="padding: 6px 12px; font-size: 0.8rem;">🗑️ Eliminar</a>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p class="no-data">No hay gimnasios registrados todavía.</p>
+                {% endfor %}
+            </div>
+        </section>
+
+    </main>
+
+</body>
+</html>
